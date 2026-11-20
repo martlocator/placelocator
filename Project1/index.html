@@ -5,25 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mywebsite</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@2.4.0/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder@2.4.0/dist/Control.Geocoder.js"></script>
 </head>
 <body>
     <header class="header">
         <aside id="sidebar">
                 <span class="logo">Findlocation</span><br><br>
-                <label> find your location</label> <br>
-            <form>
-                <input type="text" id= "search input" placeholder="search for the location">
-                <button id="submit"> Add </button>
-            </form>
+                <label> find your location</label> <br> 
+            <div class="custom-searchbox">
+                <input type="text" id= "search-input" placeholder="Enter the location">
+                <button id="search-btn"> Search </button>
+                <button id="locatebtn" title="Follow my location">📍</button>
+            </div>
             
         </aside>
-        <main>
-        </main>
     </header>
+    <main>
+        <div id="map"></div>
+    </main>
     <script src="map.js"></script>
 </body>
-    <div id="map"></div>
 </html>
