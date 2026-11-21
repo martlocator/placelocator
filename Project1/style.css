@@ -1,15 +1,35 @@
-@import url("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
 
+main{
+    flex: 1;
+    min-width: 0;
+}
+
+.custom-searchbox{
+   display: flex;
+   flex-wrap: wrap;
+   gap: 5px;
+
+}
+.custom-searchbox input{
+    flex: 1 1 100%;
+    padding: 6px 10px;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+.custom-searchbox button{
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
 #map {
     height: 100vh;
     width: 100%;
-    margin: 0 auto;
     box-shadow: 0 5px 10px gray;
 
 }
 #sidebar{
-    box-sizing: border-box;
     height: 100vh;
     width: 250px;
     padding: 5px 1em;
@@ -17,35 +37,33 @@
     border-right: 1px solid black;
 }
 
-#sidebar > span > label{
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
+#sidebar > label{
+    display: block;
+    margin-bottom: 5px;
 }
 .logo{
-    font-weight: 1000;
+    font-weight: 700;
     font-size: 2em;
 }
 *{
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-html{
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.5em;
+html, body{
+    height: 100%;
 }
 body{
-    min-height: 100vh;
-    min-height: 100dvh;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.5em;
     background-color: lightslategray;
-    display: grid;
-    grid-template-columns: auto 1fr;
-
+    display: flex;
 }
 .header{
     color: white;
     text-align: left;
+    flex-shrink: 0;
 }
 
 

@@ -1,21 +1,68 @@
-if (navigator.geolocation){
-    navigator.geolocation.getCurrentPosition(function(position){
-    var lat = position.coords.latitude;
-    var lon = position.coords.longitude;
-    
-    
-    var map= L.map('map').setView([lat,lon], 15);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-    new L.Control.Geocoder().addTo(map);
-    var marker = L.marker([lat,lon]).addTo(map).bindPopup('Current location you are at').openPopup();
-    navigator.getLocation.watchPosition(function(newPosition){
-        var newlat = newPosition.coords.latitude;
-        var newlon = newPosition.coords.longitude;
-        marker.setLatLng([newlat,newlon]);
-        map.setView([newlat,newlon]);
-    })
+    const map = L.map('map').setView([11.5564, 104.9282], 12);
 
-    });
-    }else{
-    alert('geolocation not supported in this browser.')
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; OpenStreetMap contributors'}).addTo(map);
+    let following = true;
+    let lastlatlng = null;
+    let locationmarker = null;
+    let searchmarker = null;
+    const locatebtn = document.getElementById('locatebtn');
+    function setFollowing(value){
+        following = value;
+        locatebtn.classList.toggle('following', value);
     }
+    setFollowing(true);
+    if ('geolocation' in navigator){
+        let fixed= true;
+        navigator.geolocation.watchPosition(function(position){
+            lastlatlng = [position.coords.latitude, position.coords.longitude];
+
+            if (!locationmarker){
+                locationmarker = L.marker(lastlatlng).addTo(map).bindPopup('អ្នកនៅទីនេះ!');
+            }else{
+                locationmarker.setLatLng(lastlatlng);
+            }
+            if (fixed){
+                map.setView(lastlatlng,15);
+                locationmarker.openPopup();
+                fixed = false;
+            }else if (following){
+                map.panTo(lastlatlng);
+            }
+        },
+        function(error){
+            console.warn('Geolocation error:', error.message);
+        },
+        {enableHighAccuracy: true, maximumAge: 5000}
+    );
+    }else{
+    alert('Geolocation is not supported in this browser ');
+    }
+    map.on('dragstart', function(){setFollowing(false);});
+    locatebtn.addEventListener('click', function(){setFollowing(true);
+        if (lastlatlng) map.flyTo(lastlatlng, 16);
+    });
+
+    const geocoder = L.Control.Geocoder.nominatim()
+
+    function performSearch(){ 
+        const query = document.getElementById('search-input').value.trim();
+        if (!query) return;
+        
+        geocoder.geocode(query, function(results){
+            if (results && results.length > 0){
+                const top = results[0];
+                setFollowing(false);
+
+                if (searchmarker) map.removeLayer(searchmarker);
+                searchmarker= L.marker(top.center).addTo(map).bindPopup(top.name).openPopup();
+                map.flyTo(top.center,14)
+            }else{
+                alert('Location not found. Try different address');
+            }
+        });
+    };
+    document.getElementById('search-btn').addEventListener('click',performSearch);
+    document.getElementById('search-input').addEventListener('keydown', function (e){
+        if (e.key == 'Enter') performSearch();
+    });
+   
